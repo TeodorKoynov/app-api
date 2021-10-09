@@ -1,4 +1,4 @@
-﻿namespace App.Server.Models.Songs
+﻿namespace App.Server.Features.Songs
 {
     using System.ComponentModel.DataAnnotations;
     using static Data.Validation.Song;
@@ -9,11 +9,9 @@
         [MaxLength(MaxTitleLength)]
         public string Title { get; set; }
 
-        [Required]
         [MaxLength(MaxDescriptionLength)]
         public string Description { get; set; }
 
-        [Required]
         public string ImageUrl { get; set; }
 
         [Required]

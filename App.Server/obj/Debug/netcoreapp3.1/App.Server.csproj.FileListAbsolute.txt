@@ -227,3 +227,8 @@ C:\Users\Tedo\Desktop\Project\app-api\App.Server\obj\Debug\netcoreapp3.1\App.Ser
 C:\Users\Tedo\Desktop\Project\app-api\App.Server\obj\Debug\netcoreapp3.1\App.Server.dll
 C:\Users\Tedo\Desktop\Project\app-api\App.Server\obj\Debug\netcoreapp3.1\App.Server.pdb
 C:\Users\Tedo\Desktop\Project\app-api\App.Server\obj\Debug\netcoreapp3.1\App.Server.genruntimeconfig.cache
+C:\Users\Tedo\Desktop\Project\app-api\App.Server\bin\Debug\netcoreapp3.1\libman.json
+C:\Users\Tedo\Desktop\Project\app-api\App.Server\bin\Debug\netcoreapp3.1\Microsoft.OpenApi.dll
+C:\Users\Tedo\Desktop\Project\app-api\App.Server\bin\Debug\netcoreapp3.1\Swashbuckle.AspNetCore.Swagger.dll
+C:\Users\Tedo\Desktop\Project\app-api\App.Server\bin\Debug\netcoreapp3.1\Swashbuckle.AspNetCore.SwaggerGen.dll
+C:\Users\Tedo\Desktop\Project\app-api\App.Server\bin\Debug\netcoreapp3.1\Swashbuckle.AspNetCore.SwaggerUI.dll

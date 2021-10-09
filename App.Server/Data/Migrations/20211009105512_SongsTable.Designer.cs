@@ -7,11 +7,11 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace App.Server.Migrations
+namespace App.Server.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20211009115815_DatabaseRenameTableSongsEdited")]
-    partial class DatabaseRenameTableSongsEdited
+    [Migration("20211009105512_SongsTable")]
+    partial class SongsTable
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -43,8 +43,8 @@ namespace App.Server.Migrations
 
                     b.Property<string>("Title")
                         .IsRequired()
-                        .HasColumnType("nvarchar(40)")
-                        .HasMaxLength(40);
+                        .HasColumnType("nvarchar(30)")
+                        .HasMaxLength(30);
 
                     b.Property<string>("UserId")
                         .IsRequired()
@@ -54,7 +54,7 @@ namespace App.Server.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Songs");
+                    b.ToTable("Song");
                 });
 
             modelBuilder.Entity("App.Server.Data.Models.User", b =>

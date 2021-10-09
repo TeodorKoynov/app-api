@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace App.Server.Migrations
+namespace App.Server.Data.Migrations
 {
     public partial class DatabaseRenameTableSongsEdited : Migration
     {

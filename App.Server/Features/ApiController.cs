@@ -1,4 +1,4 @@
-﻿namespace App.Server.Controllers
+﻿namespace App.Server.Features
 {
     using Microsoft.AspNetCore.Mvc;
 

@@ -1,4 +1,4 @@
-﻿namespace App.Server.Models.Identity
+﻿namespace App.Server.Features.Identity
 {
     using System.ComponentModel.DataAnnotations;
  
