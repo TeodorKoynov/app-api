@@ -3,6 +3,8 @@
     using App.Server.Infrastructure;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
+    using System.Collections;
+    using System.Collections.Generic;
     using System.Threading.Tasks;
 
     public class SongsController : ApiController
@@ -12,6 +14,15 @@
         public SongsController(ISongService songService)
         {
             this.songService = songService;
+        }
+
+        [Authorize]
+        [HttpGet]
+        public async Task<IEnumerable<SongListingResponseModel>> Mine()
+        {
+            string userId = this.User.GetId();
+
+            return await songService.ByUser(userId);
         }
 
         [Authorize]

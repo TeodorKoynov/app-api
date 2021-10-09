@@ -15,7 +15,6 @@
         [MaxLength(MaxDescriptionLength)]
         public string Description { get; set; }
 
-        [Required]
         public string ImageUrl { get; set; }
 
         [Required]
