@@ -1,4 +1,4 @@
-﻿namespace App.Server.Infrastructure
+﻿namespace App.Server.Infrastructure.Extentions
 {
     using App.Server.Data.Models;
     using App.Server.Data;
@@ -12,6 +12,7 @@
     using Microsoft.Extensions.Configuration;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.OpenApi.Models;
+    using App.Server.Infrastructure.Filters;
 
     public static class ServiceCollectionExtentions
     {
@@ -92,5 +93,11 @@
                         Version = "v1"
                     });
             });
+
+        public static void AddApiControllers(this IServiceCollection services) 
+            => services
+                .AddControllers(options => options
+                    .Filters
+                    .Add<ModelOrNotFoundActionFilter>());
     }
 }

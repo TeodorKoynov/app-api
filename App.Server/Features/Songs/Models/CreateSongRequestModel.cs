@@ -1,4 +1,4 @@
-﻿namespace App.Server.Features.Songs
+﻿namespace App.Server.Features.Songs.Models
 {
     using System.ComponentModel.DataAnnotations;
     using static Data.Validation.Song;

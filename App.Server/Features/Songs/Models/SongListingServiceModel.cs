@@ -1,7 +1,7 @@
-﻿namespace App.Server.Features.Songs
+﻿namespace App.Server.Features.Songs.Models
 {
 
-    public class SongListingResponseModel
+    public class SongListingServiceModel
     {
         public int Id { get; set; }
 

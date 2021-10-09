@@ -1,4 +1,4 @@
-﻿namespace App.Server.Features.Identity
+﻿namespace App.Server.Features.Identity.Models
 {
     public class LoginResponseModel
     {

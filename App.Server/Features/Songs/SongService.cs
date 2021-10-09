@@ -2,6 +2,7 @@
 {
     using App.Server.Data;
     using App.Server.Data.Models;
+    using App.Server.Features.Songs.Models;
     using Microsoft.EntityFrameworkCore;
     using System.Collections.Generic;
     using System.Linq;
@@ -13,11 +14,11 @@
 
         public SongService(AppDbContext data) => this.data = data;
 
-        public async Task<IEnumerable<SongListingResponseModel>> ByUser(string id)
+        public async Task<IEnumerable<SongListingServiceModel>> ByUser(string userId)
             => await data
                 .Songs
-                .Where(s => s.UserId == id)
-                .Select(s => new SongListingResponseModel
+                .Where(s => s.UserId == userId)
+                .Select(s => new SongListingServiceModel
                 {
                     Id = s.Id,
                     Title = s.Title,
@@ -43,5 +44,42 @@
 
             return song.Id;
         }
+
+        public async Task<bool> Update(int id, string title, string description, string imageUrl, string userId)
+        {
+            var song = await data
+                .Songs
+                .Where(s => s.Id == id && s.UserId == userId)
+                .FirstOrDefaultAsync();
+
+            if (song is null)
+            {
+                return false;
+            }
+
+            song.Title = title;
+            song.Description = description;
+            song.ImageUrl = imageUrl;
+
+            await this.data.SaveChangesAsync();
+
+            return true;
+        }
+
+        public async Task<SongDetailsServiceModel> Details(int id)
+            => await data
+                .Songs
+                .Where(s => s.Id == id)
+                .Select(s => new SongDetailsServiceModel
+                {
+                    Id = s.Id,
+                    Title = s.Title,
+                    Description = s.Description,
+                    ImageUrl = s.ImageUrl,
+                    AudioUrl = s.AudioUrl,
+                    UserId = s.UserId,
+                    UserName = s.User.UserName
+                })
+                .FirstOrDefaultAsync();
     }
 }

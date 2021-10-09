@@ -1,4 +1,4 @@
-﻿namespace App.Server.Infrastructure
+﻿namespace App.Server.Infrastructure.Extentions
 {
     using App.Server.Data;
     using Microsoft.AspNetCore.Builder;

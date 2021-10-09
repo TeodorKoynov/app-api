@@ -5,7 +5,8 @@ namespace App.Server
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
-    using App.Server.Infrastructure;
+    using App.Server.Infrastructure.Extentions;
+    using App.Server.Infrastructure.Filters;
 
     public class Startup
     {
@@ -23,7 +24,7 @@ namespace App.Server
                 .AddJwtAuthentication(services.GetApplicationSettings(this.Configuration))
                 .AddApplicationServices()
                 .AddSwagger()
-                .AddControllers();
+                .AddApiControllers();
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())

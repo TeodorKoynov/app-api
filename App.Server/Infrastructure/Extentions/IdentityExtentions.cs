@@ -1,4 +1,4 @@
-﻿namespace App.Server.Infrastructure
+﻿namespace App.Server.Infrastructure.Extentions
 {
     using System.Linq;
     using System.Security.Claims;

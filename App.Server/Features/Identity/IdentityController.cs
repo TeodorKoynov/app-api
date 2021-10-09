@@ -2,6 +2,7 @@
 {
     using System.Threading.Tasks;
     using App.Server.Data.Models;
+    using App.Server.Features.Identity.Models;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Options;
