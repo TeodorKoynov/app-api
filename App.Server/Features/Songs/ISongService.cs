@@ -10,6 +10,8 @@
 
         public Task<bool> Update(int id, string title, string description, string imageUrl, string userId);
 
+        public Task<bool> Delete(int id, string userId);
+
         public Task<IEnumerable<SongListingServiceModel>> ByUser(string userId);
 
         public Task<SongDetailsServiceModel> Details(int id);

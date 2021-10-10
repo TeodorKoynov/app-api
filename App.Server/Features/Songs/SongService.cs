@@ -15,7 +15,7 @@
         public SongService(AppDbContext data) => this.data = data;
 
         public async Task<IEnumerable<SongListingServiceModel>> ByUser(string userId)
-            => await data
+            => await this.data
                 .Songs
                 .Where(s => s.UserId == userId)
                 .Select(s => new SongListingServiceModel
@@ -47,10 +47,7 @@
 
         public async Task<bool> Update(int id, string title, string description, string imageUrl, string userId)
         {
-            var song = await data
-                .Songs
-                .Where(s => s.Id == id && s.UserId == userId)
-                .FirstOrDefaultAsync();
+            var song = await this.GetSongByIdAndByUserId(id, userId);
 
             if (song is null)
             {
@@ -67,7 +64,7 @@
         }
 
         public async Task<SongDetailsServiceModel> Details(int id)
-            => await data
+            => await this.data
                 .Songs
                 .Where(s => s.Id == id)
                 .Select(s => new SongDetailsServiceModel
@@ -80,6 +77,28 @@
                     UserId = s.UserId,
                     UserName = s.User.UserName
                 })
+                .FirstOrDefaultAsync();
+
+        public async Task<bool> Delete(int id, string userId)
+        {
+            var song = await this.GetSongByIdAndByUserId(id, userId);
+
+            if (song is null)
+            {
+                return false;
+            }
+
+            this.data.Songs.Remove(song);
+
+            await this.data.SaveChangesAsync();
+
+            return true;
+        }
+
+        private async Task<Song> GetSongByIdAndByUserId(int id, string userId)
+            => await this.data
+                .Songs
+                .Where(s => s.Id == id && s.UserId == userId)
                 .FirstOrDefaultAsync();
     }
 }

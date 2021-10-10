@@ -21,7 +21,7 @@
                 .UseSwagger()
                 .UseSwaggerUI(options =>
                 {
-                    options.SwaggerEndpoint("/swagger/v1/swagger.json", "My App API");
+                    options.SwaggerEndpoint("/swagger/v1/swagger.json", "MyVibe API");
                     options.RoutePrefix = string.Empty;
                 });
     }

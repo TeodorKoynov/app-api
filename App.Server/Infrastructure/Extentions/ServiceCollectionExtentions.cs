@@ -89,7 +89,7 @@
                     "v1",
                     new OpenApiInfo
                     {
-                        Title = "My App API",
+                        Title = "MyVibe API",
                         Version = "v1"
                     });
             });

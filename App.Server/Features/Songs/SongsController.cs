@@ -7,6 +7,8 @@
     using System.Collections.Generic;
     using System.Threading.Tasks;
 
+    using static Infrastructure.WebConstants;
+
     [Authorize]
     public class SongsController : ApiController
     {
@@ -26,18 +28,10 @@
         }
 
         [HttpGet]
-        [Route("{id}")]
+        [Route(Id)]
         public async Task<ActionResult<SongDetailsServiceModel>> Details(int id)
-        {
-            var song = await songService.Details(id);
+            => await songService.Details(id);
 
-            if (song is null)
-            {
-                return NotFound();
-            }
-
-            return song;
-        }
 
         [HttpPut]
         public async Task<ActionResult> Update(UpdateSongRequestModel model)
@@ -72,6 +66,22 @@
                 userId);
 
             return Created(nameof(this.Create), songId);
+        }
+
+        [HttpDelete]
+        [Route(Id)]
+        public async Task<ActionResult> Delete(int id)
+        {
+            var userId = User.GetId();
+
+            var deleted = await this.songService.Delete(id, userId);
+
+            if (!deleted)
+            {
+                return BadRequest();
+            }
+
+            return Ok();
         }
     }
 }

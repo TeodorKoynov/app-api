@@ -6,7 +6,6 @@ namespace App.Server
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
     using App.Server.Infrastructure.Extentions;
-    using App.Server.Infrastructure.Filters;
 
     public class Startup
     {
