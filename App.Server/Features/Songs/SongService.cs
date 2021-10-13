@@ -4,6 +4,7 @@
     using App.Server.Data.Models;
     using App.Server.Features.Songs.Models;
     using Microsoft.EntityFrameworkCore;
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
@@ -15,17 +16,47 @@
         public SongService(AppDbContext data) => this.data = data;
 
         public async Task<IEnumerable<SongListingServiceModel>> ByUser(string userId)
-            => await this.data
+        {
+            var songs = await this.data
                 .Songs
                 .Where(s => s.UserId == userId)
-                .Select(s => new SongListingServiceModel
-                {
-                    Id = s.Id,
-                    Title = s.Title,
-                    AudioUrl = s.AudioUrl,
-                    ImageUrl = s.ImageUrl
-                })
                 .ToListAsync();
+
+            List<SongListingServiceModel> songList = new List<SongListingServiceModel>();
+
+            foreach (Song song in songs)
+            {
+                AudioFile audioFile = this.data.AudioFiles.FirstOrDefault(audioFile => audioFile.SongId == song.Id);
+
+                SongListingServiceModel dtoSong = new SongListingServiceModel
+                {
+                    Id = song.Id,
+                    Title = song.Title,
+                    ImageUrl = song.ImageUrl,
+                    AudioFile = audioFile.Content,
+                    CreatedOn = song.CreatedOn
+                };
+
+                songList.Add(dtoSong);
+            }
+
+            return songList;
+
+           // return await this.data
+          //      .Songs
+          //      .Include(s => s.AudioFile)
+          //      .Where(s => s.UserId == userId)
+          //      .Select(s => new SongListingServiceModel
+         //       {
+         //           Id = s.Id,
+         //           Title = s.Title,
+         //           AudioFile = s.AudioFile.Content,
+         //           ImageUrl = s.ImageUrl,
+         //           CreatedOn = s.CreatedOn
+        //        })
+         //       .ToListAsync();
+        }
+
 
         public async Task<int> Create(string title, string description, string imageUrl, string audioUrl, string userId)
         {
@@ -34,12 +65,21 @@
                 Title = title,
                 Description = description,
                 ImageUrl = imageUrl,
-                AudioUrl = audioUrl,
-                UserId = userId
+                AudioFile = new AudioFile()
+                {
+                    Content = audioUrl
+                },
+                UserId = userId,
+                CreatedOn = DateTime.UtcNow
             };
 
             this.data.Add(song);
 
+            song.AudioFile.Song = song;
+
+            this.data.AudioFiles.Add(song.AudioFile);
+
+            // look at logic later
             await this.data.SaveChangesAsync();
 
             return song.Id;
@@ -64,20 +104,29 @@
         }
 
         public async Task<SongDetailsServiceModel> Details(int id)
-            => await this.data
+        {
+            Song song = await this.data
                 .Songs
-                .Where(s => s.Id == id)
-                .Select(s => new SongDetailsServiceModel
-                {
-                    Id = s.Id,
-                    Title = s.Title,
-                    Description = s.Description,
-                    ImageUrl = s.ImageUrl,
-                    AudioUrl = s.AudioUrl,
-                    UserId = s.UserId,
-                    UserName = s.User.UserName
-                })
-                .FirstOrDefaultAsync();
+                .Include(s => s.User)
+                .FirstOrDefaultAsync(s => s.Id == id);
+
+            AudioFile audioFile = this.data.AudioFiles.FirstOrDefault(audioFile => audioFile.SongId == song.Id);
+
+            SongDetailsServiceModel songDto = new SongDetailsServiceModel
+            {
+                Id = song.Id,
+                Title = song.Title,
+                Description = song.Description,
+                ImageUrl = song.ImageUrl,
+                AudioFile = audioFile.Content,
+                UserId = song.UserId,
+                UserName = song.User.UserName,
+                CreatedOn = song.CreatedOn
+            };
+
+            return songDto;
+        }
+           
 
         public async Task<bool> Delete(int id, string userId)
         {
@@ -100,5 +149,19 @@
                 .Songs
                 .Where(s => s.Id == id && s.UserId == userId)
                 .FirstOrDefaultAsync();
+
+    //    private async Task<byte[]> FileToByteArray(IFormFile file)
+    //    {
+     //       if (!(file is null))
+     //       {
+     //           using (var memoryStream = new MemoryStream())
+     //           {
+      //              await file.CopyToAsync(memoryStream);
+      //              return memoryStream.ToArray();
+     //           }
+      //      }
+    //
+    //        return null;
+     //   }
     }
 }

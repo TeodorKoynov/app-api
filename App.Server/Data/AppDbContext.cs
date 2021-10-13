@@ -13,6 +13,8 @@
 
         public DbSet<Song> Songs { get; set; }
 
+        public DbSet<AudioFile> AudioFiles { get; set; }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder
@@ -21,6 +23,13 @@
                 .WithMany(u => u.Songs)
                 .HasForeignKey(s => s.UserId)
                 .OnDelete(DeleteBehavior.Restrict);
+
+            builder
+                .Entity<Song>()
+                .HasOne(s => s.AudioFile)
+                .WithOne(a => a.Song)
+                .HasForeignKey<AudioFile>(a => a.SongId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             base.OnModelCreating(builder);
         }

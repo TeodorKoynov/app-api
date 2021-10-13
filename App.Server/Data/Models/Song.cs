@@ -1,5 +1,6 @@
 ﻿namespace App.Server.Data.Models
 {
+    using System;
     using System.ComponentModel.DataAnnotations;
     using static Validation.Song;
 
@@ -17,11 +18,13 @@
         public string ImageUrl { get; set; }
 
         [Required]
-        public string AudioUrl { get; set; }
+        public AudioFile AudioFile { get; set; }
 
         [Required]
         public string UserId { get; set; }
 
         public User User { get; set; }
+
+        public DateTime CreatedOn { get; set; }
     }
 }

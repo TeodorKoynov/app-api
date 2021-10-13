@@ -3,6 +3,7 @@
     using App.Server.Features.Songs.Models;
     using App.Server.Infrastructure.Extentions;
     using Microsoft.AspNetCore.Authorization;
+    using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using System.Collections.Generic;
     using System.Threading.Tasks;
@@ -24,7 +25,10 @@
         {
             string userId = this.User.GetId();
 
-            return await songService.ByUser(userId);
+            var songs = await songService.ByUser(userId);
+
+            // return await songService.ByUser(userId);
+            return songs;
         }
 
         [HttpGet]
