@@ -13,6 +13,8 @@
 
         public string AudioFile { get; set; }
 
+        public string UserName { get; set; }
+
         public DateTime CreatedOn { get; set; }
     }
 }

@@ -19,6 +19,7 @@
         {
             var songs = await this.data
                 .Songs
+                .Include(s => s.User)
                 .Where(s => s.UserId == userId)
                 .ToListAsync();
 
@@ -34,7 +35,8 @@
                     Title = song.Title,
                     ImageUrl = song.ImageUrl,
                     AudioFile = audioFile.Content,
-                    CreatedOn = song.CreatedOn
+                    CreatedOn = song.CreatedOn,
+                    UserName = song.User.UserName
                 };
 
                 songList.Add(dtoSong);
