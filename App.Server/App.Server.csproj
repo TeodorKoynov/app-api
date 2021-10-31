@@ -6,6 +6,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Data\Migrations\20211031171120_PlaylistSongs.cs" />
+    <Compile Remove="Data\Migrations\20211031171120_PlaylistSongs.Designer.cs" />
+    <Compile Remove="Data\Migrations\20211031183025_ActivePlayingSong1.cs" />
+    <Compile Remove="Data\Migrations\20211031183025_ActivePlayingSong1.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.18" />
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="3.1.8" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.1.8" />

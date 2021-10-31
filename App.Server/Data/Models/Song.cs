@@ -1,6 +1,7 @@
 ﻿namespace App.Server.Data.Models
 {
     using System;
+    using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using static Validation.Song;
 
@@ -26,5 +27,10 @@
         public User User { get; set; }
 
         public DateTime CreatedOn { get; set; }
+
+        public ICollection<PlaylistSong> PlaylistSong { get; set; } = new HashSet<PlaylistSong>();
+
+        public ActivePlayingSong ActivePlayingSong { get; set; }
+
     }
 }

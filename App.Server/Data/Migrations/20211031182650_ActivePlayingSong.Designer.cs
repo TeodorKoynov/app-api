@@ -4,14 +4,16 @@ using App.Server.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace App.Server.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20211031182650_ActivePlayingSong")]
+    partial class ActivePlayingSong
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -26,7 +28,7 @@ namespace App.Server.Data.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("PlaylistId")
+                    b.Property<int>("PlaylistId")
                         .HasColumnType("int");
 
                     b.Property<int>("SongId")
@@ -38,8 +40,7 @@ namespace App.Server.Data.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("PlaylistId")
-                        .IsUnique()
-                        .HasFilter("[PlaylistId] IS NOT NULL");
+                        .IsUnique();
 
                     b.HasIndex("SongId")
                         .IsUnique();
@@ -345,7 +346,9 @@ namespace App.Server.Data.Migrations
                 {
                     b.HasOne("App.Server.Data.Models.Playlist", "Playlist")
                         .WithOne("ActivePlayingSong")
-                        .HasForeignKey("App.Server.Data.Models.ActivePlayingSong", "PlaylistId");
+                        .HasForeignKey("App.Server.Data.Models.ActivePlayingSong", "PlaylistId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("App.Server.Data.Models.Song", "Song")
                         .WithOne("ActivePlayingSong")

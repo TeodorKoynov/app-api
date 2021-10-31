@@ -4,52 +4,22 @@ using App.Server.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace App.Server.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20211031173410_PlaylistSongs")]
+    partial class PlaylistSongs
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "3.1.8")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-            modelBuilder.Entity("App.Server.Data.Models.ActivePlayingSong", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int?>("PlaylistId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("SongId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("PlaylistId")
-                        .IsUnique()
-                        .HasFilter("[PlaylistId] IS NOT NULL");
-
-                    b.HasIndex("SongId")
-                        .IsUnique();
-
-                    b.HasIndex("UserId")
-                        .IsUnique()
-                        .HasFilter("[UserId] IS NOT NULL");
-
-                    b.ToTable("ActivePlayingSong");
-                });
 
             modelBuilder.Entity("App.Server.Data.Models.AudioFile", b =>
                 {
@@ -339,23 +309,6 @@ namespace App.Server.Data.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens");
-                });
-
-            modelBuilder.Entity("App.Server.Data.Models.ActivePlayingSong", b =>
-                {
-                    b.HasOne("App.Server.Data.Models.Playlist", "Playlist")
-                        .WithOne("ActivePlayingSong")
-                        .HasForeignKey("App.Server.Data.Models.ActivePlayingSong", "PlaylistId");
-
-                    b.HasOne("App.Server.Data.Models.Song", "Song")
-                        .WithOne("ActivePlayingSong")
-                        .HasForeignKey("App.Server.Data.Models.ActivePlayingSong", "SongId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("App.Server.Data.Models.User", "User")
-                        .WithOne("ActivePlayingSong")
-                        .HasForeignKey("App.Server.Data.Models.ActivePlayingSong", "UserId");
                 });
 
             modelBuilder.Entity("App.Server.Data.Models.AudioFile", b =>

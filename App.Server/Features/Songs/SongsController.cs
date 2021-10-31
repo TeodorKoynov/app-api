@@ -3,7 +3,6 @@
     using App.Server.Features.Songs.Models;
     using App.Server.Infrastructure.Extentions;
     using Microsoft.AspNetCore.Authorization;
-    using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using System.Collections.Generic;
     using System.Threading.Tasks;
