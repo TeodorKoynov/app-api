@@ -1,5 +1,6 @@
 ﻿namespace App.Server.Data.Models
 {
+    using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
 
@@ -10,6 +11,9 @@
         [Required]
         public string Title { get; set; }
 
+        public string ImageUrl { get; set; }
+
+        public DateTime ReleaseDate { get; set; }
 
         [Required]
         public string CreatorId { get; set; }

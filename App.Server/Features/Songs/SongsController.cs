@@ -24,16 +24,15 @@
         {
             string userId = this.User.GetId();
 
-            var songs = await songService.ByUser(userId);
+            var songs = await this.songService.ByUser(userId);
 
-            // return await songService.ByUser(userId);
             return songs;
         }
 
         [HttpGet]
         [Route(Id)]
         public async Task<ActionResult<SongDetailsServiceModel>> Details(int id)
-            => await songService.Details(id);
+            => await this.songService.Details(id);
 
 
         [HttpPut]
@@ -61,7 +60,7 @@
         {
             var userId = this.User.GetId();
 
-            int songId = await songService.Create(
+            int songId = await this.songService.Create(
                 model.Title,
                 model.Description,
                 model.ImageUrl, 

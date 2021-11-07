@@ -1,6 +1,5 @@
 ﻿namespace App.Server.Features.Songs.Models
 {
-    using App.Server.Data.Models;
     using System;
 
     public class SongListingServiceModel

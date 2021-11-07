@@ -13,6 +13,7 @@
     using Microsoft.EntityFrameworkCore;
     using Microsoft.OpenApi.Models;
     using App.Server.Infrastructure.Filters;
+    using App.Server.Features.Playlist;
 
     public static class ServiceCollectionExtentions
     {
@@ -80,7 +81,8 @@
         public static IServiceCollection AddApplicationServices(this IServiceCollection services)
             => services
                 .AddTransient<IIdentityService, IdentityService>()
-                .AddTransient<ISongService, SongService>();
+                .AddTransient<ISongService, SongService>()
+                .AddTransient<IPlaylistService, PlaylistService>();
 
         public static IServiceCollection AddSwagger(this IServiceCollection services)
             => services.AddSwaggerGen(options =>

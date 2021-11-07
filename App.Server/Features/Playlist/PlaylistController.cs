@@ -1,35 +1,66 @@
 ﻿namespace App.Server.Features.Playlist
 {
+    using App.Server.Features.Playlist.Models;
+    using App.Server.Infrastructure.Extentions;
     using Microsoft.AspNetCore.Mvc;
+    using System.Collections.Generic;
     using System.Threading.Tasks;
 
     using static Infrastructure.WebConstants;
 
-
     public class PlaylistController : ApiController
     {
-        [HttpGet]
-        public IActionResult Mine()
+        private readonly IPlaylistService playlistService;
+
+        public PlaylistController(IPlaylistService playlistService)
         {
-            return Ok();
+            this.playlistService = playlistService;
+        }
+
+        [HttpGet]
+        public async Task<IEnumerable<PlaylistListingServiceModel>> Mine()
+        {
+            string userId = this.User.GetId();
+
+            var playlists = await this.playlistService.ByUser(userId);
+
+            return playlists;
         }
 
         [HttpGet]
         [Route(Id)]
-        public async Task<ActionResult> Details(int id)
-        {
-            return Ok();
-        }
+        public async Task<ActionResult<PlaylistDetailsServiceModel>> Details(int id)
+            => await this.playlistService.Details(id);
 
         [HttpPost]
-        public async Task<ActionResult> Create()
+        public async Task<ActionResult> Create(CreatePlaylistRequestModel model)
         {
-            return Ok();
+            var userId = this.User.GetId();
+
+            var playlistId = await this.playlistService.Create(
+                model.Title,
+                model.ImageUrl,
+                userId);
+
+            return Created(nameof(this.Create), playlistId);
         }
 
         [HttpPut]
-        public async Task<ActionResult> Update()
+        public async Task<ActionResult> Update(UpdatePlaylistRequestModel model)
         {
+            var userId = this.User.GetId();
+
+            var updated = await this.playlistService.Update(
+                model.Id,
+                model.Title,
+                model.ImageUrl,
+                userId);
+
+            if (!updated)
+            {
+                return BadRequest();
+            }
+
             return Ok();
         }
 
@@ -37,19 +68,53 @@
         [Route(Id)]
         public async Task<ActionResult> Delete(int id)
         {
+            var userId = this.User.GetId();
+
+            var deleted = await this.playlistService.Delete(id, userId);
+
+            if (!deleted)
+            {
+                return BadRequest();
+            }
+
             return Ok();
         }
 
-        [HttpGet]
+        [HttpPost]
         [Route(SpecificSong)]
-        public async Task<ActionResult> Song(int? albumId, int songId)
+        public async Task<ActionResult> AddSongToPlaylist(int playlistId, int songId)
         {
+            var userId = this.User.GetId();
+
+            var added = await this.playlistService.AddSongToPlaylist(playlistId, songId, userId);
+
+            if (!added)
+            {
+                return BadRequest();
+            }
+
+            return Ok();
+        }
+
+        [HttpDelete]
+        [Route(SpecificSong)]
+        public async Task<ActionResult> RemoveSongFromPlaylist(int playlistId, int songId)
+        {
+            var userId = this.User.GetId();
+
+            var removed = await this.playlistService.RemoveSongFromPlaylist(playlistId, songId, userId);
+
+            if (!removed)
+            {
+                return BadRequest();
+            }
+
             return Ok();
         }
 
         [HttpGet]
         [Route(AllSongs)]
-        public async Task<ActionResult> GetAllSongs(int albumId)
+        public async Task<ActionResult> GetAllSongs(int playlistId)
         {
             return Ok();
         }
