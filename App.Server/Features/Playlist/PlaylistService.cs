@@ -50,7 +50,7 @@
                 Title = title,
                 ImageUrl = imageUrl,
                 CreatorId = userId,
-                ReleaseDate = DateTime.UtcNow,
+                ReleaseDate = DateTime.UtcNow
             };
 
             this.data.Add(playlist);
@@ -68,11 +68,16 @@
                 //.ThenInclude(ps => ps.Song)
                 .FirstOrDefaultAsync(p => p.Id == id);
 
+            if (playlist is null)
+            {
+                return null;
+            }
+
             List<PlaylistSong> playlistSongs = await data
                 .PlaylistSongs
+                .Where(ps => ps.PlaylistId == id)
                 .Include(ps => ps.Song)
                 .ThenInclude(s => s.User)
-                .Where(ps => ps.PlaylistId == id)
                 .ToListAsync();
 
             PlaylistDetailsServiceModel playlistDto = new PlaylistDetailsServiceModel
@@ -202,7 +207,75 @@
             return true;
         }
 
-        public async Task<Playlist> GetPlaylistByIdAndByUserId(int id, string userId)
+        public async Task<SongListingServiceModel> GetNextOrPreviousSong(int playlistId, int songId, bool next)
+        {
+            PlaylistSong playlistSong = await this.data
+                .PlaylistSongs
+                .Where(ps => ps.PlaylistId == playlistId)
+                .Where(ps => ps.SongId == songId)
+                .FirstOrDefaultAsync();
+
+            if (playlistSong is null)
+            {
+                return null;
+            }
+
+            List<PlaylistSong> allSonginPlaylist = await this.data
+                .PlaylistSongs
+                .Where(ps => ps.PlaylistId == playlistId)
+                .ToListAsync();
+
+            int songIndex = playlistSong.SongIndex;
+            int lastSongIndex = allSonginPlaylist.Count; 
+
+            if (next)
+            {
+                if (songIndex + 1 > lastSongIndex)
+                {
+                    songIndex = 0;
+                }
+
+                return await this.GetSongBy(songIndex + 1, playlistId);
+            }
+
+            if (songIndex == 1)
+            {
+                return await this.GetSongBy(songIndex, playlistId);
+            }
+
+            return await this.GetSongBy(songIndex - 1, playlistId);
+        }
+
+        private async Task<SongListingServiceModel> GetSongBy(int songIndex, int playlistId)
+        {
+            PlaylistSong playlistSong = await this.data
+                    .PlaylistSongs
+                    .Where(ps => ps.PlaylistId == playlistId)
+                    .Where(ps => ps.SongIndex == songIndex)
+                    .FirstOrDefaultAsync();
+
+            Song song = await this.data
+                            .Songs
+                            .Where(s => s.Id == playlistSong.SongId)
+                            .Include(s => s.User)
+                            .FirstOrDefaultAsync();
+
+            AudioFile audioFile = this.data.AudioFiles.FirstOrDefault(audioFile => audioFile.SongId == playlistSong.SongId);
+
+            SongListingServiceModel songDto = new SongListingServiceModel()
+            {
+                Id = song.Id,
+                Title = song.Title,
+                AudioFile = audioFile.Content,
+                CreatedOn = song.CreatedOn,
+                ImageUrl = song.ImageUrl,
+                UserName = song.User.UserName
+            };
+
+            return songDto;
+        }
+
+        private async Task<Playlist> GetPlaylistByIdAndByUserId(int id, string userId)
             => await this.data
                 .Playlists
                 .Where(p => p.Id == id && p.CreatorId == userId)

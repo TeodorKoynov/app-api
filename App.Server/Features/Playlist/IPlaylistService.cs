@@ -20,5 +20,7 @@
 
         public Task<bool> RemoveSongFromPlaylist(int playlistId, int songId, string userId);
 
+        public Task<SongListingServiceModel> GetNextOrPreviousSong(int playlistId, int songId, bool next);
+
     }
 }

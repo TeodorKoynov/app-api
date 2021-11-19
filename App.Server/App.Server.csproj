@@ -10,6 +10,8 @@
     <Compile Remove="Data\Migrations\20211031171120_PlaylistSongs.Designer.cs" />
     <Compile Remove="Data\Migrations\20211031183025_ActivePlayingSong1.cs" />
     <Compile Remove="Data\Migrations\20211031183025_ActivePlayingSong1.Designer.cs" />
+    <Compile Remove="Data\Migrations\20211119053239_ActivePlayingSong Edit in DbContext.cs" />
+    <Compile Remove="Data\Migrations\20211119053239_ActivePlayingSong Edit in DbContext.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

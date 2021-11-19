@@ -1,13 +1,16 @@
 ﻿namespace App.Server.Features.Playlist
 {
     using App.Server.Features.Playlist.Models;
+    using App.Server.Features.Songs.Models;
     using App.Server.Infrastructure.Extentions;
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using System.Collections.Generic;
     using System.Threading.Tasks;
 
     using static Infrastructure.WebConstants;
 
+    [Authorize]
     public class PlaylistController : ApiController
     {
         private readonly IPlaylistService playlistService;
@@ -113,10 +116,20 @@
         }
 
         [HttpGet]
-        [Route(AllSongs)]
-        public async Task<ActionResult> GetAllSongs(int playlistId)
+        [Route(SpecificSong)]
+        public async Task<ActionResult<SongListingServiceModel>> SongWithAction(int playlistId, int songId, [FromQuery(Name = "action")] string action)
         {
-            return Ok();
+            switch (action)
+            {
+                case "next":
+                    return await this.playlistService.GetNextOrPreviousSong(playlistId, songId, true);
+
+                case "previous":
+                    return await this.playlistService.GetNextOrPreviousSong(playlistId, songId, false);
+
+                default:
+                    return BadRequest();
+            }
         }
     }
 }

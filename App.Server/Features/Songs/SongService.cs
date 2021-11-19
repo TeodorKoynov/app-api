@@ -27,14 +27,11 @@
 
             foreach (Song song in songs)
             {
-                AudioFile audioFile = this.data.AudioFiles.FirstOrDefault(audioFile => audioFile.SongId == song.Id);
-
                 SongListingServiceModel dtoSong = new SongListingServiceModel
                 {
                     Id = song.Id,
                     Title = song.Title,
                     ImageUrl = song.ImageUrl,
-                    AudioFile = audioFile.Content,
                     CreatedOn = song.CreatedOn,
                     UserName = song.User.UserName
                 };
@@ -128,7 +125,6 @@
 
             return songDto;
         }
-           
 
         public async Task<bool> Delete(int id, string userId)
         {
@@ -145,6 +141,33 @@
 
             return true;
         }
+        public async Task<SongListingServiceModel> GetById(int id)
+        {
+            var song = await this.data
+                .Songs
+                .Where(s => s.Id == id)
+                .Include(s => s.User)
+                .FirstOrDefaultAsync();
+
+            if (song is null)
+            {
+                return null;
+            }
+
+            AudioFile audioFile = this.data.AudioFiles.FirstOrDefault(audioFile => audioFile.SongId == id);
+
+            SongListingServiceModel songDto = new SongListingServiceModel
+            {
+                Id = song.Id,
+                Title = song.Title,
+                AudioFile = audioFile.Content,
+                ImageUrl = song.ImageUrl,
+                UserName = song.User.UserName,
+                CreatedOn = song.CreatedOn
+            };
+
+            return songDto;
+        }
 
         private async Task<Song> GetSongByIdAndByUserId(int id, string userId)
             => await this.data
@@ -152,18 +175,18 @@
                 .Where(s => s.Id == id && s.UserId == userId)
                 .FirstOrDefaultAsync();
 
-    //    private async Task<byte[]> FileToByteArray(IFormFile file)
-    //    {
-     //       if (!(file is null))
-     //       {
-     //           using (var memoryStream = new MemoryStream())
-     //           {
-      //              await file.CopyToAsync(memoryStream);
-      //              return memoryStream.ToArray();
-     //           }
-      //      }
-    //
-    //        return null;
-     //   }
+        //    private async Task<byte[]> FileToByteArray(IFormFile file)
+        //    {
+        //       if (!(file is null))
+        //       {
+        //           using (var memoryStream = new MemoryStream())
+        //           {
+        //              await file.CopyToAsync(memoryStream);
+        //              return memoryStream.ToArray();
+        //           }
+        //      }
+        //
+        //        return null;
+        //   }
     }
 }

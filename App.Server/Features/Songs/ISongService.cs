@@ -15,5 +15,8 @@
         public Task<IEnumerable<SongListingServiceModel>> ByUser(string userId);
 
         public Task<SongDetailsServiceModel> Details(int id);
+
+        public Task<SongListingServiceModel> GetById(int id);
+
     }
 }

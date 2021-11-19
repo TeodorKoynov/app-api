@@ -3,6 +3,7 @@
     using System.Threading.Tasks;
     using App.Server.Data.Models;
     using App.Server.Features.Identity.Models;
+    using App.Server.Infrastructure.Extentions;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Options;
@@ -33,7 +34,7 @@
                 Email = model.Email
             };
 
-            var result = await userManager.CreateAsync(user, model.Password);
+            var result = await this.userManager.CreateAsync(user, model.Password);
             if (result.Succeeded)
             {
                 return Ok();

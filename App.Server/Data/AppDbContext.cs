@@ -19,6 +19,8 @@
 
         public DbSet<PlaylistSong> PlaylistSongs { get; set; }
 
+        public DbSet<ActivePlayingSong> ActivePlayingSongs { get; set; }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder
@@ -76,7 +78,6 @@
                 .HasOne(ps => ps.Song)
                 .WithMany(s => s.PlaylistSong)
                 .HasForeignKey(ps => ps.SongId);
-
 
             base.OnModelCreating(builder);
         }

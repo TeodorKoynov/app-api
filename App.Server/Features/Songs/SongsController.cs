@@ -85,5 +85,11 @@
 
             return Ok();
         }
+
+        [HttpGet]
+        [Route(PlaySongById)]
+        public async Task<ActionResult<SongListingServiceModel>> GetSong(int id)
+            => await this.songService.GetById(id);
+        
     }
 }
