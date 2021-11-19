@@ -20,9 +20,8 @@
         {
             var playlists = await data
                     .Playlists
-                    .Include(p => p.PlaylistSong)
-                    //.ThenInclude(ps => ps.Song) Referance
                     .Where(p => p.CreatorId == userId)
+                    .Include(p => p.Creator)
                     .ToListAsync();
 
             List<PlaylistListingServiceModel> playlistList = new List<PlaylistListingServiceModel>();
@@ -34,7 +33,8 @@
                     Id = playlist.Id,
                     Title = playlist.Title,
                     ImageUrl = playlist.ImageUrl,
-                    ReleaseYear = playlist.ReleaseDate.Year.ToString()
+                    ReleaseYear = playlist.ReleaseDate.Year.ToString(),
+                    CreatorName = playlist.Creator.UserName
                 };
 
                 playlistList.Add(playlistDto);
@@ -64,8 +64,7 @@
         {
             Playlist playlist = await data
                 .Playlists
-                .Include(p => p.PlaylistSong)
-                //.ThenInclude(ps => ps.Song)
+                .Include(p => p.Creator)
                 .FirstOrDefaultAsync(p => p.Id == id);
 
             if (playlist is null)
@@ -85,7 +84,8 @@
                 Id = playlist.Id,
                 Title = playlist.Title,
                 ImageUrl = playlist.ImageUrl,
-                ReleaseYear = playlist.ReleaseDate.Year.ToString()
+                ReleaseYear = playlist.ReleaseDate.Year.ToString(),
+                CreatorName = playlist.Creator.UserName
             };
 
             foreach (PlaylistSong playlistSong in playlistSongs)

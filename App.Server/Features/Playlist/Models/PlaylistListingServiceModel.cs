@@ -9,5 +9,7 @@
         public string ImageUrl { get; set; }
 
         public string ReleaseYear { get; set; }
+
+        public string CreatorName { get; set; }
     }
 }
