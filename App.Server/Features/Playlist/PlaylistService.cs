@@ -92,13 +92,14 @@
             {
                 Song song = playlistSong.Song;
 
-                SongListingServiceModel songDto = new SongListingServiceModel
+                SongFromPlaylistResponseModel songDto = new SongFromPlaylistResponseModel
                 {
                     Id = song.Id,
                     Title = song.Title,
                     CreatedOn = song.CreatedOn,
                     ImageUrl = song.ImageUrl,
-                    UserName = song.User.UserName
+                    UserName = song.User.UserName,
+                    Index = playlistSong.SongIndex
                 };
 
                 playlistDto.Songs.Add(songDto);
@@ -207,7 +208,7 @@
             return true;
         }
 
-        public async Task<SongListingServiceModel> GetNextOrPreviousSong(int playlistId, int songId, bool next)
+        public async Task<SongFromPlaylistResponseModel> GetNextOrPreviousSong(int playlistId, int songId, bool next)
         {
             PlaylistSong playlistSong = await this.data
                 .PlaylistSongs
@@ -246,7 +247,7 @@
             return await this.GetSongBy(songIndex - 1, playlistId);
         }
 
-        private async Task<SongListingServiceModel> GetSongBy(int songIndex, int playlistId)
+        private async Task<SongFromPlaylistResponseModel> GetSongBy(int songIndex, int playlistId)
         {
             PlaylistSong playlistSong = await this.data
                     .PlaylistSongs
@@ -262,7 +263,7 @@
 
             AudioFile audioFile = this.data.AudioFiles.FirstOrDefault(audioFile => audioFile.SongId == playlistSong.SongId);
 
-            SongListingServiceModel songDto = new SongListingServiceModel()
+            SongFromPlaylistResponseModel songDto = new SongFromPlaylistResponseModel()
             {
                 Id = song.Id,
                 Title = song.Title,

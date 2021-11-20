@@ -7,10 +7,10 @@
     {
         public PlaylistDetailsServiceModel()
         {
-            this.Songs = new List<SongListingServiceModel>();
+            this.Songs = new List<SongFromPlaylistResponseModel>();
         }
 
-        public List<SongListingServiceModel> Songs { get; set; }
+        public List<SongFromPlaylistResponseModel> Songs { get; set; }
      
         public int SongCount { get; set; }
     }

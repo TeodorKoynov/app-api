@@ -117,7 +117,7 @@
 
         [HttpGet]
         [Route(SpecificSong)]
-        public async Task<ActionResult<SongListingServiceModel>> SongWithAction(int playlistId, int songId, [FromQuery(Name = "action")] string action)
+        public async Task<ActionResult<SongFromPlaylistResponseModel>> SongWithAction(int playlistId, int songId, [FromQuery(Name = "action")] string action)
         {
             switch (action)
             {
