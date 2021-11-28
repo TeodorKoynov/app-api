@@ -24,6 +24,7 @@ namespace App.Server
                 .AddApplicationServices()
                 .AddSwagger()
                 .AddApiControllers();
+
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())

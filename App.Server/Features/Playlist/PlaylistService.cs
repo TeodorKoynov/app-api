@@ -106,6 +106,7 @@
             }
 
             playlistDto.SongCount = playlistDto.Songs.Count;
+            playlistDto.Songs = playlistDto.Songs.OrderBy(song => song.Index).ToList<SongFromPlaylistResponseModel>();
 
             return playlistDto;
         }
