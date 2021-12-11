@@ -10,7 +10,7 @@
 
         public Task<PlaylistDetailsServiceModel> Details(int id);
 
-        public Task<int> Create(string title, string imageUrl, string userId);
+        public Task<int> Create(string userId);
 
         public Task<bool> Update(int id, string title, string imageUrl, string userId);
 

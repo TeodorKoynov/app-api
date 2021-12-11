@@ -36,14 +36,11 @@
             => await this.playlistService.Details(id);
 
         [HttpPost]
-        public async Task<ActionResult> Create(CreatePlaylistRequestModel model)
+        public async Task<ActionResult> Create()
         {
             var userId = this.User.GetId();
 
-            var playlistId = await this.playlistService.Create(
-                model.Title,
-                model.ImageUrl,
-                userId);
+            var playlistId = await this.playlistService.Create(userId);
 
             return Created(nameof(this.Create), playlistId);
         }

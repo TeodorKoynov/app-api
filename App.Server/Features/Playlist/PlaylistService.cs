@@ -43,12 +43,13 @@
             return playlistList;
         }
 
-        public async Task<int> Create(string title, string imageUrl, string userId)
+        public async Task<int> Create(string userId)
         {
+            string title = $"My Playlist #{((await this.GetLastPlaylistIndex(userId) + 1))}";
+
             Playlist playlist = new Playlist
             {
                 Title = title,
-                ImageUrl = imageUrl,
                 CreatorId = userId,
                 ReleaseDate = DateTime.UtcNow
             };
@@ -275,6 +276,15 @@
             };
 
             return songDto;
+        }
+
+        private async Task<int> GetLastPlaylistIndex(string userId)
+        {
+            var index = await this.data.Playlists
+                .Where(p => p.CreatorId == userId)
+                .ToListAsync();
+
+            return index.Count;
         }
 
         private async Task<Playlist> GetPlaylistByIdAndByUserId(int id, string userId)
