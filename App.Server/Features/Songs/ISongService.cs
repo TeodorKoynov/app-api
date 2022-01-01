@@ -6,7 +6,7 @@
 
     public interface ISongService
     {
-        public Task<int> Create(string title, string description, string imageUrl, string audioUrl, string userId);
+        public Task<int> Create(string title, string description, string imageUrl, string audioUrl, int duration, string userId);
 
         public Task<bool> Update(int id, string title, string description, string imageUrl, string userId);
 
@@ -16,7 +16,7 @@
 
         public Task<SongDetailsServiceModel> Details(int id);
 
-        public Task<SongListingServiceModel> GetById(int id);
+        public Task<PlaySongResponseModel> GetById(int id);
 
     }
 }

@@ -2,7 +2,7 @@
 {
     using App.Server.Features.Songs.Models;
 
-    public class SongFromPlaylistResponseModel : SongListingServiceModel
+    public class SongFromPlaylistResponseModel : PlaySongResponseModel
     {
         public int Index { get; set; }
     }

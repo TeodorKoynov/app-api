@@ -22,6 +22,9 @@
         public AudioFile AudioFile { get; set; }
 
         [Required]
+        public int Duration { get; set; }
+
+        [Required]
         public string UserId { get; set; }
 
         public User User { get; set; }

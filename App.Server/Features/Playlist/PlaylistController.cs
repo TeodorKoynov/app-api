@@ -1,7 +1,6 @@
 ﻿namespace App.Server.Features.Playlist
 {
     using App.Server.Features.Playlist.Models;
-    using App.Server.Features.Songs.Models;
     using App.Server.Infrastructure.Extentions;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;

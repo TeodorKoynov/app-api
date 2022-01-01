@@ -30,7 +30,7 @@
         }
 
         [HttpGet]
-        [Route(Id)]
+        [Route(SongDetails)]
         public async Task<ActionResult<SongDetailsServiceModel>> Details(int id)
             => await this.songService.Details(id);
 
@@ -64,7 +64,8 @@
                 model.Title,
                 model.Description,
                 model.ImageUrl, 
-                model.AudioUrl, 
+                model.AudioUrl,
+                model.Duration,
                 userId);
 
             return Created(nameof(this.Create), songId);
@@ -87,8 +88,8 @@
         }
 
         [HttpGet]
-        [Route(PlaySongById)]
-        public async Task<ActionResult<SongListingServiceModel>> GetSong(int id)
+        [Route(Id)]
+        public async Task<ActionResult<PlaySongResponseModel>> GetSong(int id)
             => await this.songService.GetById(id);
         
     }

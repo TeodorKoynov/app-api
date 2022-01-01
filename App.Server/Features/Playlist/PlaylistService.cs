@@ -3,7 +3,6 @@
     using App.Server.Data;
     using App.Server.Data.Models;
     using App.Server.Features.Playlist.Models;
-    using App.Server.Features.Songs.Models;
     using Microsoft.EntityFrameworkCore;
     using System;
     using System.Collections.Generic;
@@ -99,6 +98,8 @@
                     Title = song.Title,
                     CreatedOn = song.CreatedOn,
                     ImageUrl = song.ImageUrl,
+                    Duration = song.Duration,
+                    TotalTime = this.FormatSeconds(song.Duration),
                     UserName = song.User.UserName,
                     Index = playlistSong.SongIndex
                 };
@@ -247,6 +248,11 @@
             }
 
             return await this.GetSongBy(songIndex - 1, playlistId);
+        }
+
+        private string FormatSeconds(int seconds)
+        {
+            return (seconds / 60) + ":" + (seconds % 60);
         }
 
         private async Task<SongFromPlaylistResponseModel> GetSongBy(int songIndex, int playlistId)

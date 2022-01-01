@@ -17,5 +17,6 @@
 
         public string AudioUrl { get; set; }
 
+        public int Duration { get; set; }
     }
 }

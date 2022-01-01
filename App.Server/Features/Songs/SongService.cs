@@ -32,32 +32,19 @@
                     Id = song.Id,
                     Title = song.Title,
                     ImageUrl = song.ImageUrl,
+                    Duration = song.Duration,
+                    TotalTime = this.FormatSeconds(song.Duration),
                     CreatedOn = song.CreatedOn,
-                    UserName = song.User.UserName
+                    UserName = song.User.UserName,
                 };
 
                 songList.Add(dtoSong);
             }
 
             return songList;
-
-           // return await this.data
-          //      .Songs
-          //      .Include(s => s.AudioFile)
-          //      .Where(s => s.UserId == userId)
-          //      .Select(s => new SongListingServiceModel
-         //       {
-         //           Id = s.Id,
-         //           Title = s.Title,
-         //           AudioFile = s.AudioFile.Content,
-         //           ImageUrl = s.ImageUrl,
-         //           CreatedOn = s.CreatedOn
-        //        })
-         //       .ToListAsync();
         }
 
-
-        public async Task<int> Create(string title, string description, string imageUrl, string audioUrl, string userId)
+        public async Task<int> Create(string title, string description, string imageUrl, string audioUrl, int duration, string userId)
         {
             var song = new Song
             {
@@ -66,8 +53,9 @@
                 ImageUrl = imageUrl,
                 AudioFile = new AudioFile()
                 {
-                    Content = audioUrl
+                    Content = audioUrl,
                 },
+                Duration = duration,
                 UserId = userId,
                 CreatedOn = DateTime.UtcNow
             };
@@ -117,7 +105,8 @@
                 Title = song.Title,
                 Description = song.Description,
                 ImageUrl = song.ImageUrl,
-                AudioFile = audioFile.Content,
+                Duration = song.Duration,
+                TotalTime = this.FormatSeconds(song.Duration),
                 UserId = song.UserId,
                 UserName = song.User.UserName,
                 CreatedOn = song.CreatedOn
@@ -141,7 +130,7 @@
 
             return true;
         }
-        public async Task<SongListingServiceModel> GetById(int id)
+        public async Task<PlaySongResponseModel> GetById(int id)
         {
             var song = await this.data
                 .Songs
@@ -156,17 +145,25 @@
 
             AudioFile audioFile = this.data.AudioFiles.FirstOrDefault(audioFile => audioFile.SongId == id);
 
-            SongListingServiceModel songDto = new SongListingServiceModel
+            PlaySongResponseModel songDto = new PlaySongResponseModel
             {
                 Id = song.Id,
                 Title = song.Title,
-                AudioFile = audioFile.Content,
                 ImageUrl = song.ImageUrl,
+                AudioFile = audioFile.Content,
+                Duration = song.Duration,
+                TotalTime = this.FormatSeconds(song.Duration),
                 UserName = song.User.UserName,
-                CreatedOn = song.CreatedOn
+                CreatedOn = song.CreatedOn,
+                UserId = song.UserId
             };
 
             return songDto;
+        }
+
+        private string FormatSeconds(int seconds)
+        {
+            return (seconds / 60) + ":" + (seconds % 60);
         }
 
         private async Task<Song> GetSongByIdAndByUserId(int id, string userId)

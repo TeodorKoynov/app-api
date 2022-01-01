@@ -3,7 +3,5 @@
     public class SongDetailsServiceModel : SongListingServiceModel
     {
         public string Description { get; set; }
-
-        public string UserId { get; set; }
     }
 }

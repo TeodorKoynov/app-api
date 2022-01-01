@@ -1,6 +1,5 @@
 ﻿namespace App.Server.Features.Playlist.Models
 {
-    using App.Server.Features.Songs.Models;
     using System.Collections.Generic;
 
     public class PlaylistDetailsServiceModel : PlaylistListingServiceModel
