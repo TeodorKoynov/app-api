@@ -1,4 +1,6 @@
-﻿namespace App.Server.Infrastructure.Extentions
+﻿using App.Server.Infrastructure.Services;
+
+namespace App.Server.Infrastructure.Extentions
 {
     using App.Server.Data.Models;
     using App.Server.Data;
@@ -81,6 +83,7 @@
         public static IServiceCollection AddApplicationServices(this IServiceCollection services)
             => services
                 .AddTransient<IIdentityService, IdentityService>()
+                .AddScoped<ICurrentUserService, CurrentUserService>()
                 .AddTransient<ISongService, SongService>()
                 .AddTransient<IPlaylistService, PlaylistService>();
 

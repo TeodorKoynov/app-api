@@ -1,11 +1,13 @@
-﻿namespace App.Server.Data.Models
+﻿using App.Server.Data.Models.Base;
+
+namespace App.Server.Data.Models
 {
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using static Validation.Song;
 
-    public class Song
+    public class Song : DeletableEntity
     {
         public int Id { get; set; }
 

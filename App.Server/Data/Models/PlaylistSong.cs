@@ -1,6 +1,8 @@
-﻿namespace App.Server.Data.Models
+﻿using App.Server.Data.Models.Base;
+
+namespace App.Server.Data.Models
 {
-    public class PlaylistSong
+    public class PlaylistSong : Entity
     {
         public int PlaylistId { get; set; }
 

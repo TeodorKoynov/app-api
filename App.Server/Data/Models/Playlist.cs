@@ -1,10 +1,12 @@
-﻿namespace App.Server.Data.Models
+﻿using App.Server.Data.Models.Base;
+
+namespace App.Server.Data.Models
 {
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
 
-    public class Playlist
+    public class Playlist : DeletableEntity
     {
         public int Id { get; set; }
 

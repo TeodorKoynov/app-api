@@ -1,4 +1,6 @@
-﻿namespace App.Server.Features.Playlist
+﻿using App.Server.Infrastructure.Services;
+
+namespace App.Server.Features.Playlist
 {
     using App.Server.Features.Playlist.Models;
     using App.Server.Infrastructure.Extentions;
@@ -13,16 +15,19 @@
     public class PlaylistController : ApiController
     {
         private readonly IPlaylistService playlistService;
+        private readonly ICurrentUserService currentUserService; 
 
-        public PlaylistController(IPlaylistService playlistService)
+        public PlaylistController(IPlaylistService playlistService, 
+            ICurrentUserService currentUserService)
         {
             this.playlistService = playlistService;
+            this.currentUserService = currentUserService;
         }
 
         [HttpGet]
         public async Task<IEnumerable<PlaylistListingServiceModel>> Mine()
         {
-            string userId = this.User.GetId();
+            string userId = this.currentUserService.GetId();
 
             var playlists = await this.playlistService.ByUser(userId);
 
@@ -37,7 +42,7 @@
         [HttpPost]
         public async Task<ActionResult> Create()
         {
-            var userId = this.User.GetId();
+            var userId = this.currentUserService.GetId();
 
             var playlistId = await this.playlistService.Create(userId);
 
@@ -47,7 +52,7 @@
         [HttpPut]
         public async Task<ActionResult> Update(UpdatePlaylistRequestModel model)
         {
-            var userId = this.User.GetId();
+            var userId = this.currentUserService.GetId();
 
             var updated = await this.playlistService.Update(
                 model.Id,
@@ -67,7 +72,7 @@
         [Route(Id)]
         public async Task<ActionResult> Delete(int id)
         {
-            var userId = this.User.GetId();
+            var userId = this.currentUserService.GetId();
 
             var deleted = await this.playlistService.Delete(id, userId);
 
@@ -83,7 +88,7 @@
         [Route(SpecificSong)]
         public async Task<ActionResult> AddSongToPlaylist(int playlistId, int songId)
         {
-            var userId = this.User.GetId();
+            var userId = this.currentUserService.GetId();
 
             var added = await this.playlistService.AddSongToPlaylist(playlistId, songId, userId);
 
@@ -99,7 +104,7 @@
         [Route(SpecificSong)]
         public async Task<ActionResult> RemoveSongFromPlaylist(int playlistId, int songId)
         {
-            var userId = this.User.GetId();
+            var userId = this.currentUserService.GetId();
 
             var removed = await this.playlistService.RemoveSongFromPlaylist(playlistId, songId, userId);
 

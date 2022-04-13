@@ -1,6 +1,8 @@
-﻿namespace App.Server.Data.Models
+﻿using App.Server.Data.Models.Base;
+
+namespace App.Server.Data.Models
 {
-    public class AudioFile
+    public class AudioFile : DeletableEntity
     {
         public int Id { get; set; }
 

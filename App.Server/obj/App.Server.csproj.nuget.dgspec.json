@@ -1,24 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Tedo\\Desktop\\Project\\app-api\\App.Server\\App.Server.csproj": {}
+    "C:\\Dev\\Tedo\\app-api\\App.Server\\App.Server.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Tedo\\Desktop\\Project\\app-api\\App.Server\\App.Server.csproj": {
+    "C:\\Dev\\Tedo\\app-api\\App.Server\\App.Server.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Tedo\\Desktop\\Project\\app-api\\App.Server\\App.Server.csproj",
+        "projectUniqueName": "C:\\Dev\\Tedo\\app-api\\App.Server\\App.Server.csproj",
         "projectName": "App.Server",
-        "projectPath": "C:\\Users\\Tedo\\Desktop\\Project\\app-api\\App.Server\\App.Server.csproj",
-        "packagesPath": "C:\\Users\\Tedo\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Tedo\\Desktop\\Project\\app-api\\App.Server\\obj\\",
+        "projectPath": "C:\\Dev\\Tedo\\app-api\\App.Server\\App.Server.csproj",
+        "packagesPath": "C:\\Users\\nikic\\.nuget\\packages\\",
+        "outputPath": "C:\\Dev\\Tedo\\app-api\\App.Server\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-        ],
         "configFilePaths": [
-          "C:\\Users\\Tedo\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Users\\nikic\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -95,7 +91,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.300\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.201\\RuntimeIdentifierGraph.json"
         }
       }
     }

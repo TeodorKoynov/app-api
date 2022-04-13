@@ -1,4 +1,6 @@
-﻿namespace App.Server.Features.Songs
+﻿using App.Server.Infrastructure.Services;
+
+namespace App.Server.Features.Songs
 {
     using App.Server.Features.Songs.Models;
     using App.Server.Infrastructure.Extentions;
@@ -13,16 +15,19 @@
     public class SongsController : ApiController
     {
         private readonly ISongService songService;
+        private readonly ICurrentUserService currentUserService;
 
-        public SongsController(ISongService songService)
+        public SongsController(ISongService songService, 
+            ICurrentUserService currentUserService)
         {
             this.songService = songService;
+            this.currentUserService = currentUserService;
         }
 
         [HttpGet]
         public async Task<IEnumerable<SongListingServiceModel>> Mine()
         {
-            string userId = this.User.GetId();
+            string userId = this.currentUserService.GetId();
 
             var songs = await this.songService.ByUser(userId);
 
@@ -38,7 +43,7 @@
         [HttpPut]
         public async Task<ActionResult> Update(UpdateSongRequestModel model)
         {
-            var userId = this.User.GetId();
+            var userId = this.currentUserService.GetId();
 
             var updated = await this.songService.Update(
                 model.Id, 
@@ -58,9 +63,9 @@
         [HttpPost]
         public async Task<ActionResult> Create(CreateSongRequestModel model)
         {
-            var userId = this.User.GetId();
+            var userId = this.currentUserService.GetId();
 
-            int songId = await this.songService.Create(
+            var songId = await this.songService.Create(
                 model.Title,
                 model.Description,
                 model.ImageUrl, 
@@ -75,7 +80,7 @@
         [Route(Id)]
         public async Task<ActionResult> Delete(int id)
         {
-            var userId = User.GetId();
+            var userId = this.currentUserService.GetId();
 
             var deleted = await this.songService.Delete(id, userId);
 

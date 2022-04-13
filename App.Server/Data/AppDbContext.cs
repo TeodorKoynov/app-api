@@ -1,4 +1,11 @@
-﻿namespace App.Server.Data
+﻿using System;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
+using App.Server.Data.Models.Base;
+using App.Server.Infrastructure.Services;
+
+namespace App.Server.Data
 {
     using App.Server.Data.Models;
     using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -6,9 +13,13 @@
 
     public class AppDbContext : IdentityDbContext<User>
     {
-        public AppDbContext(DbContextOptions<AppDbContext> options)
+        private readonly ICurrentUserService currentUserService;
+        
+        public AppDbContext(DbContextOptions<AppDbContext> options, 
+            ICurrentUserService currentUserService)
             : base(options)
         {
+            this.currentUserService = currentUserService;
         }
 
         public DbSet<Song> Songs { get; set; }
@@ -21,6 +32,21 @@
 
         public DbSet<ActivePlayingSong> ActivePlayingSongs { get; set; }
 
+        public override int SaveChanges(bool acceptAllChangesOnSuccess)
+        {
+            this.ApplyAuditInformation();
+
+            return base.SaveChanges(acceptAllChangesOnSuccess);
+        }
+        
+        public override Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess,
+            CancellationToken cancellationToken = new CancellationToken())
+        {
+            this.ApplyAuditInformation();
+
+            return base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
+        }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder
@@ -31,6 +57,7 @@
 
             builder
                 .Entity<Song>()
+                .HasQueryFilter(s => !s.IsDeleted)
                 .HasOne(s => s.User)
                 .WithMany(u => u.Songs)
                 .HasForeignKey(s => s.UserId)
@@ -51,6 +78,7 @@
 
             builder
                 .Entity<Playlist>()
+                .HasQueryFilter(p => !p.IsDeleted)
                 .HasOne(p => p.Creator)
                 .WithMany(c => c.Playlists)
                 .HasForeignKey(p => p.CreatorId)
@@ -61,18 +89,19 @@
                 .HasOne(p => p.ActivePlayingSong)
                 .WithOne(aps => aps.Playlist)
                 .HasForeignKey<ActivePlayingSong>(aps => aps.PlaylistId)
+                .OnDelete(DeleteBehavior.Cascade)
                 .IsRequired(false);
 
             builder
                 .Entity<PlaylistSong>()
-                .HasKey(ps => new { ps.PlaylistId, ps.SongId });
-            
+                .HasKey(ps => new {ps.PlaylistId, ps.SongId});
+
             builder
                 .Entity<PlaylistSong>()
                 .HasOne(ps => ps.Playlist)
                 .WithMany(p => p.PlaylistSong)
                 .HasForeignKey(ps => ps.PlaylistId);
-            
+
             builder
                 .Entity<PlaylistSong>()
                 .HasOne(ps => ps.Song)
@@ -81,5 +110,42 @@
 
             base.OnModelCreating(builder);
         }
-    }
+
+        private void ApplyAuditInformation()
+            => this.ChangeTracker
+            .Entries()
+            .ToList()
+                .ForEach(entry =>
+            {
+                var userName = this.currentUserService.GetUserName();
+                
+                if (entry.Entity is IDeletableEntity deletableEntity)
+                {
+                    if (entry.State is EntityState.Deleted)
+                    {
+                        deletableEntity.DeletedOn = DateTime.UtcNow;
+                        deletableEntity.DeletedBy = userName;
+                        deletableEntity.IsDeleted = true;
+                        
+                        entry.State = EntityState.Modified;
+                    }
+                }
+                
+                if (entry.Entity is IEntity entity)
+                {
+                    if (entry.State is EntityState.Added)
+                    {
+                        entity.CreatedOn = DateTime.UtcNow;
+                        entity.CreatedBy = userName;
+                    }
+                    else if (entry.State is EntityState.Modified)
+                    {
+                        entity.ModifiedOn = DateTime.Now;
+                        entity.ModifiedBy = userName;
+                    }
+                }
+            });
+
+
+}
 }
