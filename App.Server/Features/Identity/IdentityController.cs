@@ -1,12 +1,11 @@
 ﻿namespace App.Server.Features.Identity
 {
     using System.Threading.Tasks;
-    using App.Server.Data.Models;
-    using App.Server.Features.Identity.Models;
-    using App.Server.Infrastructure.Extentions;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Options;
+    using App.Server.Data.Models;
+    using Models;
 
     public class IdentityController : ApiController
     {

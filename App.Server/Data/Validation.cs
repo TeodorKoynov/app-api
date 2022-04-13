@@ -8,5 +8,10 @@
 
             public const int MaxTitleLength = 40;
         }
+        
+        public class User
+        {
+            public const int MaxBiographyLenght = 200;
+        }
     }
 }

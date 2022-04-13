@@ -30,9 +30,7 @@ namespace App.Server.Data.Models
         public string UserId { get; set; }
 
         public User User { get; set; }
-
-        public DateTime CreatedOn { get; set; }
-
+        
         public ICollection<PlaylistSong> PlaylistSong { get; set; } = new HashSet<PlaylistSong>();
 
         public ActivePlayingSong ActivePlayingSong { get; set; }

@@ -51,6 +51,10 @@ namespace App.Server.Data
         {
             builder
                 .Entity<User>()
+                .OwnsOne(u => u.Profile);
+
+            builder
+                .Entity<User>()
                 .HasOne(u => u.ActivePlayingSong)
                 .WithOne(aps => aps.User)
                 .HasForeignKey<ActivePlayingSong>(aps => aps.UserId);

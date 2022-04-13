@@ -1,4 +1,5 @@
-﻿using App.Server.Infrastructure.Services;
+﻿using App.Server.Features.Profiles;
+using App.Server.Infrastructure.Services;
 
 namespace App.Server.Infrastructure.Extentions
 {
@@ -82,8 +83,9 @@ namespace App.Server.Infrastructure.Extentions
 
         public static IServiceCollection AddApplicationServices(this IServiceCollection services)
             => services
-                .AddTransient<IIdentityService, IdentityService>()
                 .AddScoped<ICurrentUserService, CurrentUserService>()
+                .AddTransient<IIdentityService, IdentityService>()
+                .AddTransient<IProfileService, ProfileService>()
                 .AddTransient<ISongService, SongService>()
                 .AddTransient<IPlaylistService, PlaylistService>();
 

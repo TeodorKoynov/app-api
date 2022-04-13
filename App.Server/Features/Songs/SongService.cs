@@ -21,6 +21,7 @@
                 .Songs
                 .Include(s => s.User)
                 .Where(s => s.UserId == userId)
+                .OrderByDescending(s => s.CreatedOn)
                 .ToListAsync();
 
             List<SongListingServiceModel> songList = new List<SongListingServiceModel>();

@@ -2,12 +2,11 @@
 
 namespace App.Server.Features.Songs
 {
-    using App.Server.Features.Songs.Models;
-    using App.Server.Infrastructure.Extentions;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using System.Collections.Generic;
     using System.Threading.Tasks;
+    using Models;
 
     using static Infrastructure.WebConstants;
 
@@ -26,13 +25,7 @@ namespace App.Server.Features.Songs
 
         [HttpGet]
         public async Task<IEnumerable<SongListingServiceModel>> Mine()
-        {
-            string userId = this.currentUserService.GetId();
-
-            var songs = await this.songService.ByUser(userId);
-
-            return songs;
-        }
+            => await this.songService.ByUser(this.currentUserService.GetId());
 
         [HttpGet]
         [Route(SongDetails)]
