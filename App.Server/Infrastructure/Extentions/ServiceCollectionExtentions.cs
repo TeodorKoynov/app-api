@@ -1,5 +1,6 @@
 ﻿using App.Server.Features.Follows;
 using App.Server.Features.Profiles;
+using App.Server.Features.Search;
 using App.Server.Infrastructure.Services;
 
 namespace App.Server.Infrastructure.Extentions
@@ -89,6 +90,7 @@ namespace App.Server.Infrastructure.Extentions
                 .AddTransient<IProfileService, ProfileService>()
                 .AddTransient<ISongService, SongService>()
                 .AddTransient<IPlaylistService, PlaylistService>()
+                .AddTransient<ISearchService, SearchService>()
                 .AddTransient<IFollowService, FollowService>();
 
         public static IServiceCollection AddSwagger(this IServiceCollection services)
