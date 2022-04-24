@@ -4,14 +4,16 @@ using App.Server.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace App.Server.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220414092811_UserProfile")]
+    partial class UserProfile
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -91,30 +93,6 @@ namespace App.Server.Data.Migrations
                         .IsUnique();
 
                     b.ToTable("AudioFiles");
-                });
-
-            modelBuilder.Entity("App.Server.Data.Models.Follow", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("FollowerId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("FollowerId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Follows");
                 });
 
             modelBuilder.Entity("App.Server.Data.Models.Playlist", b =>
@@ -325,6 +303,9 @@ namespace App.Server.Data.Migrations
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("bit");
 
+                    b.Property<string>("ProfileUserId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
 
@@ -344,6 +325,8 @@ namespace App.Server.Data.Migrations
                         .IsUnique()
                         .HasName("UserNameIndex")
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
+
+                    b.HasIndex("ProfileUserId");
 
                     b.ToTable("AspNetUsers");
                 });
@@ -506,21 +489,6 @@ namespace App.Server.Data.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("App.Server.Data.Models.Follow", b =>
-                {
-                    b.HasOne("App.Server.Data.Models.User", "Follower")
-                        .WithMany()
-                        .HasForeignKey("FollowerId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("App.Server.Data.Models.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("App.Server.Data.Models.Playlist", b =>
                 {
                     b.HasOne("App.Server.Data.Models.User", "Creator")
@@ -548,7 +516,7 @@ namespace App.Server.Data.Migrations
             modelBuilder.Entity("App.Server.Data.Models.Profile", b =>
                 {
                     b.HasOne("App.Server.Data.Models.User", null)
-                        .WithOne("Profile")
+                        .WithOne()
                         .HasForeignKey("App.Server.Data.Models.Profile", "UserId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
@@ -561,6 +529,13 @@ namespace App.Server.Data.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("App.Server.Data.Models.User", b =>
+                {
+                    b.HasOne("App.Server.Data.Models.Profile", "Profile")
+                        .WithMany()
+                        .HasForeignKey("ProfileUserId");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

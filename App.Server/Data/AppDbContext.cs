@@ -22,6 +22,10 @@ namespace App.Server.Data
             this.currentUserService = currentUserService;
         }
 
+        public DbSet<Profile> Profiles { get; set; }
+        
+        public DbSet<Follow> Follows { get; set; }
+
         public DbSet<Song> Songs { get; set; }
 
         public DbSet<AudioFile> AudioFiles { get; set; }
@@ -51,14 +55,32 @@ namespace App.Server.Data
         {
             builder
                 .Entity<User>()
-                .OwnsOne(u => u.Profile);
-
+                .HasOne(u => u.Profile)
+                .WithOne()
+                .HasForeignKey<Profile>(p => p.UserId)
+                .OnDelete(DeleteBehavior.Restrict);
+            
             builder
                 .Entity<User>()
                 .HasOne(u => u.ActivePlayingSong)
                 .WithOne(aps => aps.User)
                 .HasForeignKey<ActivePlayingSong>(aps => aps.UserId);
 
+            builder
+                .Entity<Follow>()
+                .HasOne(f => f.User)
+                .WithMany()
+                .HasForeignKey(f => f.UserId)
+                .OnDelete(DeleteBehavior.Restrict);
+                
+
+            builder
+                .Entity<Follow>()
+                .HasOne(f => f.Follower)
+                .WithMany()
+                .HasForeignKey(f => f.FollowerId)
+                .OnDelete(DeleteBehavior.Restrict);
+                
             builder
                 .Entity<Song>()
                 .HasQueryFilter(s => !s.IsDeleted)

@@ -38,16 +38,16 @@ namespace App.Server.Features.Songs
         {
             var userId = this.currentUserService.GetId();
 
-            var updated = await this.songService.Update(
+            var result = await this.songService.Update(
                 model.Id, 
                 model.Title, 
                 model.Description, 
                 model.ImageUrl, 
                 userId);
 
-            if (!updated)
+            if (result.Failure)
             {
-                return BadRequest();
+                return BadRequest(result.Error);
             }
 
             return Ok();
@@ -75,11 +75,11 @@ namespace App.Server.Features.Songs
         {
             var userId = this.currentUserService.GetId();
 
-            var deleted = await this.songService.Delete(id, userId);
+            var result = await this.songService.Delete(id, userId);
 
-            if (!deleted)
+            if (result.Failure)
             {
-                return BadRequest();
+                return BadRequest(result.Error);
             }
 
             return Ok();

@@ -1,11 +1,10 @@
-﻿using App.Server.Infrastructure.Services;
-
-namespace App.Server.Features.Playlist
+﻿namespace App.Server.Features.Playlist
 {
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using System.Collections.Generic;
     using System.Threading.Tasks;
+    using App.Server.Infrastructure.Services;
     using Models;
 
     using static Infrastructure.WebConstants;
@@ -47,15 +46,15 @@ namespace App.Server.Features.Playlist
         {
             var userId = this.currentUserService.GetId();
 
-            var updated = await this.playlistService.Update(
+            var result = await this.playlistService.Update(
                 model.Id,
                 model.Title,
                 model.ImageUrl,
                 userId);
 
-            if (!updated)
+            if (result.Failure)
             {
-                return BadRequest();
+                return BadRequest(result.Error);
             }
 
             return Ok();
@@ -67,11 +66,11 @@ namespace App.Server.Features.Playlist
         {
             var userId = this.currentUserService.GetId();
 
-            var deleted = await this.playlistService.Delete(id, userId);
+            var result = await this.playlistService.Delete(id, userId);
 
-            if (!deleted)
+            if (result.Failure)
             {
-                return BadRequest();
+                return BadRequest(result.Error);
             }
 
             return Ok();
@@ -83,11 +82,11 @@ namespace App.Server.Features.Playlist
         {
             var userId = this.currentUserService.GetId();
 
-            var added = await this.playlistService.AddSongToPlaylist(playlistId, songId, userId);
+            var result = await this.playlistService.AddSongToPlaylist(playlistId, songId, userId);
 
-            if (!added)
+            if (result.Failure)
             {
-                return BadRequest();
+                return BadRequest(result.Error);
             }
 
             return Ok();
@@ -99,11 +98,11 @@ namespace App.Server.Features.Playlist
         {
             var userId = this.currentUserService.GetId();
 
-            var removed = await this.playlistService.RemoveSongFromPlaylist(playlistId, songId, userId);
+            var result = await this.playlistService.RemoveSongFromPlaylist(playlistId, songId, userId);
 
-            if (!removed)
+            if (result.Failure)
             {
-                return BadRequest();
+                return BadRequest(result.Error);
             }
 
             return Ok();

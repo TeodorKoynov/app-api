@@ -1,17 +1,20 @@
-namespace App.Server.Data.Models
+using App.Server.Data;
+
+namespace App.Server.Features.Profiles.Models
 {
     using System.ComponentModel.DataAnnotations;
-
+    
     using static Validation.User;
-
-    public class Profile
+    
+    public class UpdateProfileRequestModel
     {
-        [Key]
-        [Required]
-        public string UserId { get; set; }
+        public string UserName { get; set; }
+        
+        [EmailAddress]
+        public string Email { get; set; }
         
         [MaxLength(MaxNameLenght)]
-        public string Name { get; set; }
+        public string Name { get; set;}
 
         [MaxLength(MaxBiographyLenght)]
         public string Biography { get; set; }

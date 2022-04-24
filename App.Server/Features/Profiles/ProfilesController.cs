@@ -22,5 +22,27 @@ namespace App.Server.Features.Profiles
         [Authorize]
         public async Task<ActionResult<ProfileServiceModel>> Mine()
             => await this.profileService.ByUser(this.currentUserService.GetId());
+
+        [HttpPut]
+        [Authorize]
+        public async Task<ActionResult> Update(UpdateProfileRequestModel model)
+        {
+            var userId = this.currentUserService.GetId();
+
+            var result = await this.profileService.Update(
+                userId,
+                model.UserName,
+                model.Email,
+                model.Name,
+                model.Biography,
+                model.MainPhotoUrl);
+
+            if (result.Failure)
+            {
+                return BadRequest(result.Error);
+            }
+
+            return Ok();
+        }
     }
 }

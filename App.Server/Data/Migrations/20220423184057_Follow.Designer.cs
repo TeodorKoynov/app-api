@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace App.Server.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20220413082610_UserProfile")]
-    partial class UserProfile
+    [Migration("20220423184057_Follow")]
+    partial class Follow
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -95,6 +95,30 @@ namespace App.Server.Data.Migrations
                     b.ToTable("AudioFiles");
                 });
 
+            modelBuilder.Entity("App.Server.Data.Models.Follow", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("FollowerId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("FollowerId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Follows");
+                });
+
             modelBuilder.Entity("App.Server.Data.Models.Playlist", b =>
                 {
                     b.Property<int>("Id")
@@ -172,6 +196,27 @@ namespace App.Server.Data.Migrations
                     b.HasIndex("SongId");
 
                     b.ToTable("PlaylistSongs");
+                });
+
+            modelBuilder.Entity("App.Server.Data.Models.Profile", b =>
+                {
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Biography")
+                        .HasColumnType("nvarchar(200)")
+                        .HasMaxLength(200);
+
+                    b.Property<string>("MainPhotoUrl")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(40)")
+                        .HasMaxLength(40);
+
+                    b.HasKey("UserId");
+
+                    b.ToTable("Profiles");
                 });
 
             modelBuilder.Entity("App.Server.Data.Models.Song", b =>
@@ -463,6 +508,21 @@ namespace App.Server.Data.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("App.Server.Data.Models.Follow", b =>
+                {
+                    b.HasOne("App.Server.Data.Models.User", "Follower")
+                        .WithMany()
+                        .HasForeignKey("FollowerId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("App.Server.Data.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("App.Server.Data.Models.Playlist", b =>
                 {
                     b.HasOne("App.Server.Data.Models.User", "Creator")
@@ -487,6 +547,15 @@ namespace App.Server.Data.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("App.Server.Data.Models.Profile", b =>
+                {
+                    b.HasOne("App.Server.Data.Models.User", null)
+                        .WithOne("Profile")
+                        .HasForeignKey("App.Server.Data.Models.Profile", "UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("App.Server.Data.Models.Song", b =>
                 {
                     b.HasOne("App.Server.Data.Models.User", "User")
@@ -494,29 +563,6 @@ namespace App.Server.Data.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("App.Server.Data.Models.User", b =>
-                {
-                    b.OwnsOne("App.Server.Data.Models.Profile", "Profile", b1 =>
-                        {
-                            b1.Property<string>("UserId")
-                                .HasColumnType("nvarchar(450)");
-
-                            b1.Property<string>("Biography")
-                                .HasColumnType("nvarchar(200)")
-                                .HasMaxLength(200);
-
-                            b1.Property<string>("MainPhotoUrl")
-                                .HasColumnType("nvarchar(max)");
-
-                            b1.HasKey("UserId");
-
-                            b1.ToTable("AspNetUsers");
-
-                            b1.WithOwner()
-                                .HasForeignKey("UserId");
-                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

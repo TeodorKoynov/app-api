@@ -1,32 +1,29 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Dev\\Tedo\\app-api\\App.Server\\App.Server.csproj": {}
+    "D:\\dev\\app-api\\App.Server\\App.Server.csproj": {}
   },
   "projects": {
-    "C:\\Dev\\Tedo\\app-api\\App.Server\\App.Server.csproj": {
+    "D:\\dev\\app-api\\App.Server\\App.Server.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Dev\\Tedo\\app-api\\App.Server\\App.Server.csproj",
+        "projectUniqueName": "D:\\dev\\app-api\\App.Server\\App.Server.csproj",
         "projectName": "App.Server",
-        "projectPath": "C:\\Dev\\Tedo\\app-api\\App.Server\\App.Server.csproj",
-        "packagesPath": "C:\\Users\\nikic\\.nuget\\packages\\",
-        "outputPath": "C:\\Dev\\Tedo\\app-api\\App.Server\\obj\\",
+        "projectPath": "D:\\dev\\app-api\\App.Server\\App.Server.csproj",
+        "packagesPath": "C:\\Users\\teodo\\.nuget\\packages\\",
+        "outputPath": "D:\\dev\\app-api\\App.Server\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\nikic\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+          "C:\\Users\\teodo\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "netcoreapp3.1"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "netcoreapp3.1": {
-            "targetAlias": "netcoreapp3.1",
             "projectReferences": {}
           }
         },
@@ -38,7 +35,6 @@
       },
       "frameworks": {
         "netcoreapp3.1": {
-          "targetAlias": "netcoreapp3.1",
           "dependencies": {
             "Microsoft.AspNetCore.Authentication.JwtBearer": {
               "target": "Package",
@@ -91,7 +87,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.201\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.418\\RuntimeIdentifierGraph.json"
         }
       }
     }

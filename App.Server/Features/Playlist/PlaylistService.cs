@@ -1,14 +1,14 @@
 ﻿namespace App.Server.Features.Playlist
 {
-    using App.Server.Data;
-    using App.Server.Data.Models;
-    using App.Server.Features.Playlist.Models;
     using Microsoft.EntityFrameworkCore;
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
-
+    using Data;
+    using Infrastructure.Services;
+    using App.Server.Data.Models;
+    using Models;
     public class PlaylistService : IPlaylistService
     {
         private readonly AppDbContext data;
@@ -113,13 +113,12 @@
             return playlistDto;
         }
 
-        public async Task<bool> Update(int id, string title, string imageUrl, string userId)
+        public async Task<Result> Update(int id, string title, string imageUrl, string userId)
         {
             Playlist playlist = await this.GetPlaylistByIdAndByUserId(id, userId);
-
             if (playlist is null)
             {
-                return false;
+                return "This user cannot edit this playlist!";
             }
 
             playlist.Title = title;
@@ -130,13 +129,12 @@
             return true;
         }
 
-        public async Task<bool> Delete(int id, string userId)
+        public async Task<Result> Delete(int id, string userId)
         {
             Playlist playlist = await this.GetPlaylistByIdAndByUserId(id, userId);
-
             if (playlist is null)
             {
-                return false;
+                return "This user cannot delete this playlist!";
             }
 
             data.Remove(playlist);
@@ -146,7 +144,7 @@
             return true;
         }
 
-        public async Task<bool> AddSongToPlaylist(int playlistId, int songId, string userId)
+        public async Task<Result> AddSongToPlaylist(int playlistId, int songId, string userId)
         {
             Playlist playlist = await this.GetPlaylistByIdAndByUserId(playlistId, userId);
 
@@ -157,7 +155,7 @@
 
             if (playlist is null || song is null)
             {
-                return false;
+                return "The song cannot be added to the playlist!";
             }
 
             PlaylistSong playlistSong = new PlaylistSong
@@ -180,7 +178,7 @@
             return true;
         }
 
-        public async Task<bool> RemoveSongFromPlaylist(int playlistId, int songId, string userId)
+        public async Task<Result> RemoveSongFromPlaylist(int playlistId, int songId, string userId)
         {
             Playlist playlist = await this.GetPlaylistByIdAndByUserId(playlistId, userId);
 
@@ -191,7 +189,7 @@
 
             if (playlist is null || playlistSongToDelete is null)
             {
-                return false;
+                return "The song cannot be removed from the playlist!";
             }
 
             var playlistSongs = await this.data

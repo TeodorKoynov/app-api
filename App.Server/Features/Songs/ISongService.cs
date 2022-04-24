@@ -1,6 +1,7 @@
 ﻿namespace App.Server.Features.Songs
 {
-    using App.Server.Features.Songs.Models;
+    using Models;
+    using Infrastructure.Services;
     using System.Collections.Generic;
     using System.Threading.Tasks;
 
@@ -8,9 +9,9 @@
     {
         public Task<int> Create(string title, string description, string imageUrl, string audioUrl, int duration, string userId);
 
-        public Task<bool> Update(int id, string title, string description, string imageUrl, string userId);
+        public Task<Result> Update(int id, string title, string description, string imageUrl, string userId);
 
-        public Task<bool> Delete(int id, string userId);
+        public Task<Result> Delete(int id, string userId);
 
         public Task<IEnumerable<SongListingServiceModel>> ByUser(string userId);
 

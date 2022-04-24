@@ -1,6 +1,7 @@
 ﻿namespace App.Server.Features.Songs
 {
     using App.Server.Data;
+    using App.Server.Infrastructure.Services;
     using App.Server.Data.Models;
     using App.Server.Features.Songs.Models;
     using Microsoft.EntityFrameworkCore;
@@ -73,13 +74,12 @@
             return song.Id;
         }
 
-        public async Task<bool> Update(int id, string title, string description, string imageUrl, string userId)
+        public async Task<Result> Update(int id, string title, string description, string imageUrl, string userId)
         {
             var song = await this.GetSongByIdAndByUserId(id, userId);
-
             if (song is null)
             {
-                return false;
+                return "This user cannot edit this song!";
             }
 
             song.Title = title;
@@ -116,13 +116,12 @@
             return songDto;
         }
 
-        public async Task<bool> Delete(int id, string userId)
+        public async Task<Result> Delete(int id, string userId)
         {
             var song = await this.GetSongByIdAndByUserId(id, userId);
-
             if (song is null)
             {
-                return false;
+                return "This user cannot delete this song!";
             }
 
             this.data.Songs.Remove(song);
